@@ -1,0 +1,39 @@
+# Patched by example/project/patches/prod/apps.yaml with pypatcher
+
+# Key Replacements
+# ----------------
+# rsdata-telegram-dispatcher/bot_key = prod_bot_key
+
+rsdata-telegram-dispatcher:
+  bot_key: prod_bot_key
+  class: TelegramDispatcher
+  dataset_name: file_datacentre_telegram_users
+  dependencies:
+  - rsdata-redis-cache
+  - rsdata-rabbit-blood
+  - rsdata_telegram_group_manager
+  - rsdata_bigquery_dispatcher
+  max_message_age_s: 10
+  menu:
+    main:
+      keyboard:
+      - Get Events: default
+      - Set Event Query Frequency: default
+      - Filters: default
+      - "\U0001F53B": default
+      message: How can I help you?
+    "\U0001F448\U0001F3FF":
+      keyboard:
+      - "\U0001F53A": default
+      - Get Billed MiBs: default
+      message: 'More:'
+    "\U0001F53B":
+      keyboard:
+      - "\U0001F53A": default
+      - Get Billed MiBs: default
+      message: 'More:'
+  module: telegram_dispatcher
+  telegram_modules:
+  - rsdata-telegram-datacentre
+  - rsdata_telegram_group_manager
+  - rsdata_bigquery_dispatcher

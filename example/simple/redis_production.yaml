@@ -1,0 +1,70 @@
+# Patched by example/simple/redis_prod_patch.yaml with pypatcher
+
+# Key Replacements
+# ----------------
+# metadata/+env = prod
+# spec/serviceName = redis
+# spec/selector/matchLabels/+env = production
+# spec/replicas = 2
+# spec/template/metadata/labels/+env = production
+# spec/template/spec/containers = [{'name': 'redis', 'ports': [{'containerPort': 6380}], 'resources': {'limits': {'cpu': '0.5'}}}]
+# spec/volumeClaimTemplates = [{'metadata': {'name': 'data'}, 'spec': {'storageClassName': 'DigitalOCeanBlock', 'resources': {'requests': {'storage': '1Gi'}}}}]
+
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  env: prod
+  name: cache-redis
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: redis
+      env: production
+  serviceName: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+        env: production
+    spec:
+      containers:
+      - name: redis
+        ports:
+        - containerPort: 6380
+        resources:
+          limits:
+            cpu: '0.5'
+      volumes:
+      - configMap:
+          name: redis-config
+        name: config
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: DigitalOCeanBlock
+---
+# metadata/labels/+env = production
+# spec/-ports = [{'port': 6379, 'name': 'peer'}]
+# spec/+ports = [{'port': 6378, 'name': 'peer'}]
+# spec/selector/+env = production
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: redis
+    env: production
+  name: redis
+spec:
+  clusterIP: None
+  ports:
+  - name: peer
+    port: 6378
+  selector:
+    app: redis
+    env: production

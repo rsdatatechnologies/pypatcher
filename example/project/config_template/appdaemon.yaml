@@ -1,0 +1,16 @@
+log:
+  logfile: STDOUT
+  errorfile: STDERR
+appdaemon:
+  threads: 5
+  latitude: -26.2309
+  longitude: 28.0583
+  elevation: 0
+  time_zone: Africa/Johannesburg
+  api_port: 5050
+  production_mode: False
+  app_dir: /usr/src/applets
+  plugins:
+    Default:
+      type: default
+      namespace: default

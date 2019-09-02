@@ -1,0 +1,61 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: cache-redis
+  env: development
+spec:
+  serviceName: "redis"
+  selector:
+    matchLabels:
+      app: redis
+      env: development
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis
+        env: development
+    spec:
+      containers:
+        - name: redis
+          image: redis:5.0.3-alpine
+          ports:
+          - containerPort: 6379
+          resources:
+            limits:
+              cpu: "0.1"
+          volumeMounts:
+          - mountPath: /data
+            name: data
+          - mountPath: /redis-master
+            name: config
+          command: [ "redis-server", "/redis-master/redis.conf" ]
+      volumes:
+        - name: config
+          configMap:
+            name: redis-config
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 1Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  labels:
+    app: redis
+    env: development
+spec:
+  ports:
+  - port: 6379
+    name: peer
+  clusterIP: None
+  selector:
+    app: redis

@@ -1,0 +1,42 @@
+metadata:
+  +env: prod #Add production label
+spec:
+  serviceName: "redis" #Change service name
+  selector:
+    matchLabels:
+      +env: production #Add production label
+  replicas: 2 #Increase replica count
+  template:
+    metadata:
+      labels:
+        +env: production #Add production label
+    spec:
+      containers: # Replace Array Block
+        - name: redis 
+          ports:
+          - containerPort: 6380
+          resources: 
+            limits:
+              cpu: "0.5"  
+  volumeClaimTemplates: # Replace Array Block
+  - metadata:
+      name: data
+    spec:
+      storageClassName: DigitalOCeanBlock # Change to production storage
+      resources:
+        requests:
+          storage: 1Gi # Increase storage request
+
+---
+metadata:
+  labels:
+    +env: production #Add production label
+spec:
+  -ports: # Replace sepc ports block of containers with name:redis
+    - port: 6379 
+      name: peer
+  +ports: # Replace sepc ports block of containers with name:redis
+    - port: 6378
+      name: peer
+  selector:
+    +env: production #Add production label

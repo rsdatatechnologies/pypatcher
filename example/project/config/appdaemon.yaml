@@ -1,0 +1,22 @@
+# Patched by example/project/patches/prod/appdaemon.yaml with pypatcher
+
+# Key Replacements
+# ----------------
+# appdaemon/production_mode = True
+
+appdaemon:
+  api_port: 5050
+  app_dir: /usr/src/applets
+  elevation: 0
+  latitude: -26.2309
+  longitude: 28.0583
+  plugins:
+    Default:
+      namespace: default
+      type: default
+  production_mode: true
+  threads: 5
+  time_zone: Africa/Johannesburg
+log:
+  errorfile: STDERR
+  logfile: STDOUT

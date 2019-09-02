@@ -1,0 +1,33 @@
+rsdata-telegram-dispatcher:
+  class: TelegramDispatcher
+  module: telegram_dispatcher
+  max_message_age_s: 10
+  dependencies:
+    - rsdata-redis-cache
+    - rsdata-rabbit-blood
+    - rsdata_telegram_group_manager
+    - rsdata_bigquery_dispatcher
+  telegram_modules:
+    - rsdata-telegram-datacentre
+    - rsdata_telegram_group_manager
+    - rsdata_bigquery_dispatcher
+  bot_key: bot_key
+  dataset_name: file_datacentre_telegram_users
+  menu:
+    "main":
+      message: "How can I help you?"
+      keyboard:
+        - Get Events: default
+        - Set Event Query Frequency: default
+        - Filters: default
+        - "\U0001F53B" : default
+    "\U0001f448\U0001f3ff":
+      message: "More:"
+      keyboard:
+        - "\U0001F53A": default
+        - Get Billed MiBs: default
+    "\U0001F53B":
+      message: "More:"
+      keyboard:
+        - "\U0001F53A": default
+        - Get Billed MiBs: default
