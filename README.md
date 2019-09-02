@@ -1,9 +1,7 @@
-# pypatcher
-Python YAML Patcher
-
+<br>
 This simple application was created to enable devlopment automation of kubernetes microservices by patching YAML configuration files.
 
-I thought its about time to make some contributions the opensource community that enabled me to get this far.
+I created this after failing to find an existing solution and I thought that it would be a great time to make a contribution the opensource community.
 
 <b> Usage </b>
 <br>
