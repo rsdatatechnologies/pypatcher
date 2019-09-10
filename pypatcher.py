@@ -67,7 +67,8 @@ def main(args):
   with open(patch_file, 'r') as ifile:
     patch_string = ifile.read()
   
-  template_dicts = list(yaml.safe_load_all(sys.stdin.read()))
+  std_in = sys.stdin.read()
+  template_dicts = list(yaml.safe_load_all(std_in))
   patch_dicts = list(yaml.safe_load_all(patch_string))
 
   if len(patch_dicts)>len(template_dicts):
@@ -76,6 +77,11 @@ def main(args):
   
   count = 0
   print(general_comments.format(patch_file))
+  
+  if len(patch_dicts) == 0:
+    print("# Empty Patch file\n")
+    print(std_in)
+
   for patch_dict in patch_dicts:
     if(count>0):
       print("---") #Print yaml seperator
